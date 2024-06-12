@@ -8,8 +8,8 @@ import { userSchema } from "../validators";
 export const userRouter = new Hono();
 
 //get  all users
-userRouter.get('/users',  getUsers)
-userRouter.get('/users/:id', getUser)
+userRouter.get('/users', adminRoleAuth, getUsers)
+userRouter.get('/users/:id', userRoleAuth, getUser)
 
 // create a user
 userRouter.post("/users", zValidator("json", userSchema, (result, c) =>{

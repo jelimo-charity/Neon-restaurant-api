@@ -1,7 +1,8 @@
+import { userRoleAuth } from './../middlewares/authorize';
 import bcrypt from 'bcrypt';
 import db from '../drizzle/db';
 import { eq } from 'drizzle-orm';
-import { TSuser } from '../drizzle/schema';
+import { AuthUsersTable, TSuser } from '../drizzle/schema';
 import { usersTable } from '../drizzle/schema';
 import { error } from 'console';
 import  jwt   from 'jsonwebtoken'
@@ -46,20 +47,19 @@ export const loginUserService = async ( email: string, password: string) =>{
     if (userArray.length === 0) {
         throw new Error("Invalid credentials");
     }
-
     const user = userArray[0];
-
     if (!user){
         throw error ("invalid credentials")
     }
     const isPasswordValid = await bcrypt.compare(password, user.password)
-
     if (!isPasswordValid){
         throw error ("invalid credentials, try again")
-
-    
     }
-    const token = jwt.sign({id: user.id, email: user.email}, secret!, {
+    const userRole = await db.select().from(AuthUsersTable).where(eq(AuthUsersTable.userId, user.id))
+    if(!userRole) {
+        throw error("user not found")
+    }
+    const token = jwt.sign({id: user.id, email: user.email, role: userRole }, secret!, {
         expiresIn
     })
     return {token, user}

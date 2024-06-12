@@ -10,7 +10,6 @@ export const getUserOrdersController = async (c: Context) => {
         if (!orders || orders.length === 0) {
             return c.text("No orders found for this user", 404);
         }
-
         return c.json(orders, 200);
     } catch (error: any) {
         return c.json({ error: error.message }, 400);
