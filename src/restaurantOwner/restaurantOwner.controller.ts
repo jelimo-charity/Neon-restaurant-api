@@ -1,6 +1,6 @@
 
 import { Context } from "hono";
-import { restuarantOwnersService, getRestuarantOwnerService, createRestuarantOwnerService, updateRestuarantOwnerService, deleteRestuarantOwnerService } from "./restaurantOwner.service";
+import { restuarantOwnersService, getRestaurantOwnerService, createRestuarantOwnerService, updateRestuarantOwnerService, deleteRestuarantOwnerService } from "./restaurantOwner.service";
 
 export const listRestaurantOwners = async (c: Context) => {
     try {
@@ -22,7 +22,7 @@ export const getRestuarantOwner = async (c: Context) => {
     const id = parseInt(c.req.param("id"));
     if (isNaN(id)) return c.text("Invalid ID", 400);
 
-    const RestuarantOwner = await getRestuarantOwnerService(id);
+    const RestuarantOwner = await getRestaurantOwnerService(id);
     if (RestuarantOwner == undefined) {
         return c.text("RestuarantOwner not found", 404);
     }
@@ -49,7 +49,7 @@ export const updateRestuarantOwner = async (c: Context) => {
     const RestuarantOwner = await c.req.json();
     try {
         // search for the RestuarantOwner
-        const searchedRestuarantOwner = await getRestuarantOwnerService(id);
+        const searchedRestuarantOwner = await getRestaurantOwnerService(id);
         if (searchedRestuarantOwner == undefined) return c.text("RestuarantOwner not found", 404);
         // get the data and update it
         const res = await updateRestuarantOwnerService(id, RestuarantOwner);
@@ -68,7 +68,7 @@ export const deleteRestuarantOwner = async (c: Context) => {
 
     try {
         //search for the RestuarantOwner
-        const RestuarantOwner = await getRestuarantOwnerService(id);
+        const RestuarantOwner = await getRestaurantOwnerService(id);
         if (RestuarantOwner == undefined) return c.text("RestuarantOwner not found", 404);
         //deleting the RestuarantOwner
         const res = await deleteRestuarantOwnerService(id);

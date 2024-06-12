@@ -1,4 +1,4 @@
-import { adminRoleAuth, userRoleAuth } from './../middlewares/authorize';
+import { adminRoleAuth, userAdminRoleAuth, userRoleAuth } from './../middlewares/authorize';
 import { Hono } from "hono";
 import { getUsers, getUser, createUser, updateUser, deleteUser } from "./user.controller";
 import { zValidator } from "@hono/zod-validator";
@@ -9,7 +9,7 @@ export const userRouter = new Hono();
 
 //get  all users
 userRouter.get('/users', adminRoleAuth, getUsers)
-userRouter.get('/users/:id', userRoleAuth, getUser)
+userRouter.get('/users/:id', userAdminRoleAuth, getUser)
 
 // create a user
 userRouter.post("/users", zValidator("json", userSchema, (result, c) =>{
