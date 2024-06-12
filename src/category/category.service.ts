@@ -4,19 +4,20 @@ import { TIcategory, TScategory, categoryTable } from "../drizzle/schema";
 
 export const CategoryService = async (limit?: number): Promise<TScategory[] | null> => {
     if (limit) {
-        return await db.query.categoryTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(categoryTable);
     }
-    return await db.query.categoryTable.findMany();
+    return await db.select().from(categoryTable);
 }
 
-export const getCategoryService = async (id: number): Promise<TIcategory | undefined> => {
-    return await db.query.categoryTable.findFirst({
-        where: eq(categoryTable.id, id)
-    })
-}
+export const getCategoryService = async (id: number): Promise<TScategory | undefined> => {
+    const categoryArray = await db.select().from(categoryTable).where(eq(categoryTable.id, id)).execute();
 
+    if (categoryArray.length === 0) {
+        return undefined;
+    }
+
+    return categoryArray[0];
+}
 export const createCategoryService = async (Category: TIcategory) => {
     await db.insert(categoryTable).values(Category)
     return "Category created successfully";

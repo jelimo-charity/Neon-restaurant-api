@@ -4,17 +4,19 @@ import {TIrestaurant,TSrestaurant, restaurantTable } from "../drizzle/schema";
 
 export const restaurantService = async (limit?: number): Promise<TSrestaurant[] | null> => {
     if (limit) {
-        return await db.query.restaurantTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(restaurantTable)
     }
-    return await db.query.restaurantTable.findMany();
+    return await db.select().from(restaurantTable)
 }
 
-export const getRestaurantService = async (id: number): Promise<TIrestaurant | undefined> => {
-    return await db.query.restaurantTable.findFirst({
-        where: eq(restaurantTable.id, id)
-    })
+export const getRestaurantService = async (id: number): Promise<TSrestaurant | undefined> => {
+    const restaurantArray = await db.select().from(restaurantTable).where(eq(restaurantTable.id, id)).execute();
+
+    if (restaurantArray.length === 0) {
+        return undefined;
+    }
+
+    return restaurantArray[0];
 }
 
 export const createRestaurantService = async (Restaurant: TIrestaurant) => {

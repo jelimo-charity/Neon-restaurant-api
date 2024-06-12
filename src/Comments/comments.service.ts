@@ -4,17 +4,19 @@ import { TIcomments, TScomments, commentsTable } from "../drizzle/schema";
 
 export const CommentsService = async (limit?: number): Promise<TScomments[] | null> => {
     if (limit) {
-        return await db.query.commentsTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(commentsTable);
     }
-    return await db.query.commentsTable.findMany();
+    return await db.select().from(commentsTable);
 }
 
-export const getCommentService = async (id: number): Promise<TIcomments | undefined> => {
-    return await db.query.commentsTable.findFirst({
-        where: eq(commentsTable.id, id)
-    })
+export const getCommentService = async (id: number): Promise<TScomments | undefined> => {
+    const commentArray = await db.select().from(commentsTable).where(eq(commentsTable.id, id)).execute();
+
+    if (commentArray.length === 0) {
+        return undefined;
+    }
+
+    return commentArray[0];
 }
 
 export const createCommentService = async (Comment: TIcomments) => {

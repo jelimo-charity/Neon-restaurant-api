@@ -4,17 +4,20 @@ import {TSrestaurantOwner,TIrestaurantOwner, restaurantOwnerTable } from "../dri
 
 export const restuarantOwnersService = async (limit?: number): Promise<TSrestaurantOwner[] | null> => {
     if (limit) {
-        return await db.query.restaurantOwnerTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(restaurantOwnerTable);
+
     }
-    return await db.query.restaurantOwnerTable.findMany();
+    return await db.select().from(restaurantOwnerTable);
 }
 
-export const getRestuarantOwnerService = async (id: number): Promise<TIrestaurantOwner | undefined> => {
-    return await db.query.restaurantOwnerTable.findFirst({
-        where: eq(restaurantOwnerTable.id, id)
-    })
+export const getRestaurantOwnerService = async (id: number): Promise<TSrestaurantOwner | undefined> => {
+    const restaurantOwnerArray = await db.select().from(restaurantOwnerTable).where(eq(restaurantOwnerTable.id, id)).execute();
+
+    if (restaurantOwnerArray.length === 0) {
+        return undefined;
+    }
+
+    return restaurantOwnerArray[0];
 }
 
 export const createRestuarantOwnerService = async (RestuarantOwner: TIrestaurantOwner) => {

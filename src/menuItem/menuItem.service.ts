@@ -8,11 +8,15 @@ export const menuItemService = async (limit?: number): Promise<TSmenuItem[] | nu
     }
     return await db.select().from(menuItemTable);
 }
+export const getmenuItemService = async (id: number): Promise<TSmenuItem | undefined> => {
+    const menuItemArray = await db.select().from(menuItemTable).where(eq(menuItemTable.id, id)).execute();
 
-// export const getmenuItemService = async (id: number): Promise<TImenuItem | undefined> => {
-//     return await db.select().from(menuItemTable).where(eq(menuItemTable.id, id)
-    
-// }
+    if (menuItemArray.length === 0) {
+        return undefined;
+    }
+
+    return menuItemArray[0];
+}
 
 export const createmenuItemService = async (menu: TImenuItem) => {
     await db.insert(menuItemTable).values(menu)

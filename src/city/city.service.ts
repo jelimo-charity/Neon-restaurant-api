@@ -6,22 +6,21 @@ import { eq } from 'drizzle-orm';
 
 export const getcitiesService = async (limit?: number):Promise<TScity[]  | null> => {
     if(limit) {
-        return await db.query.cityTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(cityTable)
     }
-    return await db.query.cityTable.findMany();
+    return await db.select().from(cityTable);
 }
 
-//get a single user
+export const getCityService = async (id: number): Promise<TScity | undefined> => {
+    const cityArray = await db.select().from(cityTable).where(eq(cityTable.id, id)).execute();
 
-export const getCityService = async(id: number): Promise<TScity | undefined> =>{
-    return await db.query.cityTable.findFirst({
-        where: eq(cityTable.id, id)
-    })
+    if (cityArray.length === 0) {
+        return undefined;
+    }
+
+    return cityArray[0];
 }
-
-//create a new user
+//create a new city
 export const createCityService = async (city: TIcity) =>{
     await db.insert(cityTable).values(city)
     return "city created successfully";

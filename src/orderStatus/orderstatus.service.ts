@@ -4,17 +4,20 @@ import {TIorderStatus,TSorderStatus, orderStatusTable } from "../drizzle/schema"
 
 export const orderStatusService = async (limit?: number): Promise<TSorderStatus[] | null> => {
     if (limit) {
-        return await db.query.orderStatusTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(orderStatusTable)
     }
-    return await db.query.orderStatusTable.findMany();
+    return await db.select().from(orderStatusTable);
 }
 
-export const getOrderStatusService = async (id: number): Promise<TIorderStatus | undefined> => {
-    return await db.query.orderStatusTable.findFirst({
-        where: eq(orderStatusTable.id, id)
-    })
+
+export const getOrderStatusService = async (id: number): Promise<TSorderStatus | undefined> => {
+    const orderStatusArray = await db.select().from(orderStatusTable).where(eq(orderStatusTable.id, id)).execute();
+
+    if (orderStatusArray.length === 0) {
+        return undefined;
+    }
+
+    return orderStatusArray[0];
 }
 
 export const createOrderStatusService = async (OrderStatus: TIorderStatus) => {

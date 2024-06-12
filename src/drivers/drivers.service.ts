@@ -4,17 +4,19 @@ import { TIdrivers, TSdrivers, driversTable } from "../drizzle/schema";
 
 export const driversService = async (limit?: number): Promise<TSdrivers[] | null> => {
     if (limit) {
-        return await db.query.driversTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(driversTable);
     }
-    return await db.query.driversTable.findMany();
+    return await db.select().from(driversTable);
 }
 
-export const getDriverService = async (id: number): Promise<TIdrivers | undefined> => {
-    return await db.query.driversTable.findFirst({
-        where: eq(driversTable.id, id)
-    })
+export const getDriverService = async (id: number): Promise<TSdrivers | undefined> => {
+    const driverArray = await db.select().from(driversTable).where(eq(driversTable.id, id)).execute();
+
+    if (driverArray.length === 0) {
+        return undefined;
+    }
+
+    return driverArray[0];
 }
 
 export const createDriverService = async (Driver: TIdrivers) => {

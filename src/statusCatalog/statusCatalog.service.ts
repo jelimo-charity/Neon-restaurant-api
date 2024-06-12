@@ -4,17 +4,20 @@ import {TIstatusCatalog,TSstatusCatalog, statusCatalogTable } from "../drizzle/s
 
 export const StatusCatalogsService = async (limit?: number): Promise<TSstatusCatalog[] | null> => {
     if (limit) {
-        return await db.query.statusCatalogTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(statusCatalogTable);
+
     }
-    return await db.query.statusCatalogTable.findMany();
+    return await db.select().from(statusCatalogTable);
 }
 
-export const getStatusCatalogService = async (id: number): Promise<TIstatusCatalog | undefined> => {
-    return await db.query.statusCatalogTable.findFirst({
-        where: eq(statusCatalogTable.id, id)
-    })
+export const getStatusCatalogService = async (id: number): Promise<TSstatusCatalog | undefined> => {
+    const statusCatalogArray = await db.select().from(statusCatalogTable).where(eq(statusCatalogTable.id, id)).execute();
+
+    if (statusCatalogArray.length === 0) {
+        return undefined;
+    }
+
+    return statusCatalogArray[0];
 }
 
 

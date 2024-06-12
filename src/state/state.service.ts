@@ -1,25 +1,24 @@
 import db from '../drizzle/db'
-import { TSstate,TIstate, stateTable } from '../drizzle/schema';
+import { TSstate,TIstate, stateTable, usersTable } from '../drizzle/schema';
 import { eq } from 'drizzle-orm';
 //Get all users
 
 export const getStatesService = async (limit?: number):Promise<TSstate[]> => {
     if(limit) {
-        return await db.query.stateTable.findMany({
-            limit: limit
-        });
+        return await db.select().from(stateTable)
     }
-    return await db.query.stateTable.findMany();
+    return await db.select().from(stateTable);
 }
-
 //get a single state
 
-export const getStateService = async(id: number) =>{
-   const states = await db.query.stateTable.findFirst({
-        where: eq(stateTable.id, id)
-    
-    });
-    return states ?? null
+export const getStateService = async (id: number): Promise<TSstate | undefined> => {
+    const stateArray = await db.select().from(stateTable).where(eq(stateTable.id, id)).execute();
+
+    if (stateArray.length === 0) {
+        return undefined;
+    }
+
+    return stateArray[0];
 }
 
 //create a new state

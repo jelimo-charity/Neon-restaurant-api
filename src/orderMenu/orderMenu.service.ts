@@ -9,10 +9,14 @@ export const OrderMenuItemsService = async (limit?: number): Promise<TSorderMenu
     return await db.select().from(orderMenuTable);
 }
 
-export const getOrderMenuItemService = async (id: number): Promise<TIorderMenu | undefined> => {
-    return await db.query.orderMenuTable.findFirst({
-        where: eq(orderMenuTable.id, id)
-    })
+export const getOrderMenuItemService = async (id: number): Promise<TSorderMenu | undefined> => {
+    const orderMenuArray = await db.select().from(orderMenuTable).where(eq(orderMenuTable.id, id)).execute();
+
+    if (orderMenuArray.length === 0) {
+        return undefined;
+    }
+
+    return orderMenuArray[0];
 }
 
 export const createOrderMenuItemService = async (OrderMenuItem: TIorderMenu) => {
