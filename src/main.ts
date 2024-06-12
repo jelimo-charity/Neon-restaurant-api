@@ -17,6 +17,10 @@ import { restaurantRouter } from "./restaurant/restaurant.router.js";
 import { orderStatusRouter } from "./orderStatus/orderstatus.router.js";
 import { statusCatalogRouter } from "./statusCatalog/statusCatalog.router.js";
 import { authRouter } from "./auth/auth.router.js";
+import userOrderRouter from "./userOrders/userorder.router.js";
+import restaurantMenuRouter from "./restaurantMenuItems/restaurantMenu.router.js";
+import restaurantLocationRouter from "./restaurantLocation/restaurantlocation.router.js";
+import commentComplaintRouter from "./commentsComplaints/commentComplaint.router.js";
 
 const app = new Hono().basePath('/api');
 
@@ -41,6 +45,11 @@ app.route("/", orderMenuItemRouter)
 app.route("/", orderStatusRouter)
 app.route("/", restuarantOwnerRouter)
 app.route("/", statusCatalogRouter)
+
+app.route('/', userOrderRouter);
+app.route('/', restaurantMenuRouter);
+app.route('/', restaurantLocationRouter)
+app.route("/", commentComplaintRouter)
 
 serve({
     fetch: app.fetch,

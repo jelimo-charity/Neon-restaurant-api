@@ -383,11 +383,6 @@ export const ordermenuRelations = relations(orderMenuTable,({one,many})=>({
     // }),
 
    
-})) 
-
-
-
-
-
+}))
 
 
