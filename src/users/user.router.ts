@@ -16,7 +16,7 @@ userRouter.post("/users", zValidator("json", userSchema, (result, c) =>{
     if(!result.success){
         return c.json(result.error,400)
     }
-}), createUser)
+}), userAdminRoleAuth, createUser)
 
 //update a user
 userRouter.put("/users/:id", updateUser)

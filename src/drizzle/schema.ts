@@ -9,8 +9,7 @@ import { pgTable } from "drizzle-orm/pg-core";
 
 
 // =======================TYPES USED AT USER.SERVICE.TS====================
-export type TSuser = typeof usersTable.$inferSelect
-export type TIuser = typeof usersTable.$inferInsert
+
 
 export type TSstate = typeof stateTable.$inferSelect
 export type TIstate = typeof stateTable.$inferInsert
@@ -195,7 +194,8 @@ export const usersTable = pgTable("users", {
     password: varchar("password").notNull(),
     // role: roleEnum("role").default("user")
 });
-
+export type TSuser = typeof usersTable.$inferSelect
+export type TIuser = typeof usersTable.$inferInsert
 
 export const userRelations =relations(usersTable, ({one,many})=>({
     // city: many(cityTable),

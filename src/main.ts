@@ -19,8 +19,8 @@ import { statusCatalogRouter } from "./statusCatalog/statusCatalog.router.js";
 import { authRouter } from "./auth/auth.router.js";
 import userOrderRouter from "./userOrders/userorder.router.js";
 import restaurantMenuRouter from "./restaurantMenuItems/restaurantMenu.router.js";
-import restaurantLocationRouter from "./restaurantLocation/restaurantlocation.router.js";
 import commentComplaintRouter from "./commentsComplaints/commentComplaint.router.js";
+import { cityStateRouter, orderDetailsRouter, restaurantDetailsRouter } from "./citystate/cityStateRouter.js";
 
 const app = new Hono().basePath('/api');
 
@@ -31,6 +31,11 @@ app.get("ok", (c) =>{
 })
 app.route("/", authRouter)
 
+app.route("/", restaurantDetailsRouter )
+app.route("/", orderDetailsRouter)
+
+
+app.route("/", cityStateRouter)
 app.route("/", userRouter),
 app.route("/", stateRouter),
 app.route("/", cityRouter),
@@ -48,7 +53,6 @@ app.route("/", statusCatalogRouter)
 
 app.route('/', userOrderRouter);
 app.route('/', restaurantMenuRouter);
-app.route('/', restaurantLocationRouter)
 app.route("/", commentComplaintRouter)
 
 serve({
