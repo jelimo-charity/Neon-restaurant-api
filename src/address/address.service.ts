@@ -10,13 +10,6 @@ export const addressService = async (limit?: number): Promise<TSaddress[] | null
     return await db.select().from(addressTable);
 }
 
-// export const usersService = async (limit?: number):Promise<TSuser[]  | null> => {
-//     if(limit) {
-//         return await db.select().from(usersTable)
-//     }
-//     return await db.select().from(usersTable);
-// }
-
 export const getAddressService = async (id: number): Promise<TSaddress | undefined> => {
     const addressArray = await db.select().from(addressTable).where(eq(addressTable.id, id)).execute();
 
