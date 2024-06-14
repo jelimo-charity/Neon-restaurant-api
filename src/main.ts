@@ -1,4 +1,4 @@
-import { Hono } from "hono"; 
+import { Context, Hono } from "hono"; 
 import "dotenv/config"
 import {serve} from '@hono/node-server'
 import { HTTPException } from "hono/http-exception";
@@ -27,37 +27,11 @@ const app = new Hono().basePath('/api');
 
 // default route 
 
-app.get("ok", (c) =>{
-    return c.text("the server is running")
-})
-app.route("/", authRouter)
+// app.get("ok", (c: Context) =>{
+//     return c.text("the server is running")
+// })
 
-app.route("/", restaurantDetailsRouter )
-app.route("/", orderDetailsRouter)
-
-
-app.route("/", cityStateRouter)
-app.route("/", userRouter),
-app.route("/", stateRouter),
-app.route("/", cityRouter),
-app.route("/", restaurantRouter)
-app.route("/", categoryRouter)
-app.route("/", menuRouter)
-app.route("/", addressRouter)
-app.route("/", commentRouter)
-app.route("/", ordersRouter)
-app.route("/", driverRouter)
-app.route("/", orderMenuItemRouter)
-app.route("/", orderStatusRouter)
-app.route("/", restuarantOwnerRouter)
-app.route("/", statusCatalogRouter)
-
-app.route('/', userOrderRouter);
-app.route('/', restaurantMenuRouter);
-app.route("/", commentComplaintRouter)
-
-
-app.get('/api', (c) => {    
+app.get('/ok', (c: Context) => {    
     return c.html(
         html`
         <style>
@@ -94,15 +68,45 @@ app.get('/api', (c) => {
         <div class="container">
             <h1>Welcome to the Charity Jelimo Restaurant Management API</h1>
             <ul>
-                <li><b>Message:</b>  This is a simple API for a restaurant management system</li>
+                <li><b>Message:</b> Welcome to the Charity Jelimo API</li>
                 <li><b>Author:</b> Charity Jelimo</li>
-                <li><b>Description:</b> This is uild using Hono, Drizzle ORM, Typescript and Postgresql</li>
-                <li><b>GitHub:</b> <a href="https://github.com/jelimo-charity/Neon-restaurant-api">GitHub link</a></li>
+                <li><b>Version:</b> 1.0</li>
+                <li><b>Description:</b> This is a simple API for a restaurant management system</li>
+                <li><b>GitHub:</b> <a href="https://github.com/your-github/restaurant_api">GitHub link</a></li>
             </ul>
         </div>
         `
     );
 });
+
+app.route("/", authRouter)
+
+app.route("/", restaurantDetailsRouter )
+app.route("/", orderDetailsRouter)
+
+
+app.route("/", cityStateRouter)
+app.route("/", userRouter),
+app.route("/", stateRouter),
+app.route("/", cityRouter),
+app.route("/", restaurantRouter)
+app.route("/", categoryRouter)
+app.route("/", menuRouter)
+app.route("/", addressRouter)
+app.route("/", commentRouter)
+app.route("/", ordersRouter)
+app.route("/", driverRouter)
+app.route("/", orderMenuItemRouter)
+app.route("/", orderStatusRouter)
+app.route("/", restuarantOwnerRouter)
+app.route("/", statusCatalogRouter)
+
+app.route('/', userOrderRouter);
+app.route('/', restaurantMenuRouter);
+app.route("/", commentComplaintRouter)
+
+
+
 
 
 serve({
