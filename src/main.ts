@@ -3,6 +3,7 @@ import "dotenv/config"
 import {serve} from '@hono/node-server'
 import { HTTPException } from "hono/http-exception";
 import { userRouter } from "./users/user.router.js";
+import {html, raw} from 'hono/html'
 import { stateRouter } from "./state/state.router.js";
 import { cityRouter } from "./city/city.router.js";
 import { addressRouter } from "./address/address.router.js";
@@ -54,6 +55,55 @@ app.route("/", statusCatalogRouter)
 app.route('/', userOrderRouter);
 app.route('/', restaurantMenuRouter);
 app.route("/", commentComplaintRouter)
+
+
+app.get('/api', (c) => {    
+    return c.html(
+        html`
+        <style>
+            body, html {
+                height: 100%;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                text-align: center;
+                border: 1px solid #ddd;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            li {
+                margin-bottom: 10px;
+            }
+            a {
+                color: #007BFF;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+        </style>
+        <div class="container">
+            <h1>Welcome to the Charity Jelimo Restaurant Management API</h1>
+            <ul>
+                <li><b>Message:</b>  This is a simple API for a restaurant management system</li>
+                <li><b>Author:</b> Charity Jelimo</li>
+                <li><b>Description:</b> This is uild using Hono, Drizzle ORM, Typescript and Postgresql</li>
+                <li><b>GitHub:</b> <a href="https://github.com/jelimo-charity/Neon-restaurant-api">GitHub link</a></li>
+            </ul>
+        </div>
+        `
+    );
+});
+
 
 serve({
     fetch: app.fetch,
