@@ -23,7 +23,7 @@ import restaurantMenuRouter from "./restaurantMenuItems/restaurantMenu.router.js
 import commentComplaintRouter from "./commentsComplaints/commentComplaint.router.js";
 import { cityStateRouter, orderDetailsRouter, restaurantDetailsRouter } from "./citystate/cityStateRouter.js";
 
-const app = new Hono().basePath('/api');
+const app = new Hono()
 
 // default route 
 
@@ -31,7 +31,7 @@ const app = new Hono().basePath('/api');
 //     return c.text("the server is running")
 // })
 
-app.get('/ok', (c: Context) => {    
+app.get('/', (c: Context) => {    
     return c.html(
         html`
         <style>
