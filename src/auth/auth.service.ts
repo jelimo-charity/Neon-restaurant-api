@@ -7,6 +7,7 @@ import { usersTable } from '../drizzle/schema';
 import { error } from 'console';
 import  jwt   from 'jsonwebtoken'
 import 'dotenv/config'
+import {sendEmail, sendRegistrationEmail} from '../nodemailer/mailer'
 
 const secret = process.env.SECRET;
 const expiresIn = process.env.EXPIRESIN
@@ -31,6 +32,13 @@ export const registerUserService = async (user: TSuser) => {
             password: hashedPassword
         }).execute();
 
+    //send a registration email
+    const emailSubject = "Welcome to Our Restaurant Platform!";
+    const evetName = "Our Restaurant Platform";
+    const emailResponse = await sendRegistrationEmail(user.email, evetName);
+    console.log(emailResponse);
+
+return 'User registered successfully';
         console.log(newUser);
         return 'User created successfully';
     } catch (error) {
